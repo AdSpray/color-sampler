@@ -57,8 +57,8 @@
       return;
     }
     preview.css({
-      left: (ratio * (e.pageX + 5)) + 'px',
-      top: (ratio * (e.pageY + 5)) + 'px'
+      left: ( (e.pageX + 5)) + 'px',
+      top: ( (e.pageY + 5)) + 'px'
     });
     var pixels = this.setupPreview(x, y);
     showPreview();
