@@ -7,8 +7,10 @@
  * @license MIT
  */
 (function ($, window, document) {
-  'use strict';
 
+
+  'use strict';
+  var ratio = window.devicePixelRatio || 1;
   var KEY = 'color-sampler';
   var SELECTOR = ':' + KEY;
   var INACCURACY = 5;
@@ -33,10 +35,10 @@
   Sampler.prototype.resize = function () {
     var canvas = this.canvas;
     this.bounds = {
-      left: parseInt(canvas.css('padding-left')) || 0,
-      top: parseInt(canvas.css('padding-top')) || 0,
-      right: canvas.width(),
-      bottom: canvas.height()
+      left: (parseInt(canvas.css('padding-left')) * ratio) || 0,
+      top: (parseInt(canvas.css('padding-top')) * ratio) || 0,
+      right: (canvas.width() * ratio),
+      bottom: (canvas.height() * ratio)
     };
   };
 
@@ -46,16 +48,17 @@
     }
     var canvas = this.canvas;
     var bounds = this.bounds;
-    var x = e.offsetX - bounds.left;
-    var y = e.offsetY - bounds.top;
+    var x = ratio * (e.offsetX - bounds.left);
+    var y = ratio * (e.offsetY - bounds.top);
+
     this.inRange = this.checkInRange(x, y);
     if (!this.inRange && (x < -INACCURACY || y < -INACCURACY || x >= bounds.right + INACCURACY || y >= bounds.bottom + INACCURACY)) {
       hidePreview();
       return;
     }
     preview.css({
-      left: (e.pageX + 5) + 'px',
-      top: (e.pageY + 5) + 'px'
+      left: (ratio * (e.pageX + 5)) + 'px',
+      top: (ratio * (e.pageY + 5)) + 'px'
     });
     var pixels = this.setupPreview(x, y);
     showPreview();
